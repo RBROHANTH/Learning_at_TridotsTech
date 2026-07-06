@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HTML in Small Bites</title>
+<style>
+  :root{
+    --bg: #0b1220;
+    --panel: #101a2c;
+    --panel-2: #0d1626;
+    --border: #1e2c45;
+    --text: #dbe4f3;
+    --text-dim: #7c8bab;
+    --gold: #e8b04b;
+    --teal: #4fd1c5;
+    --danger: #e07a7a;
+    --radius: 10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+  .code-font{
+    font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+  }
+
+  header{
+    padding: 28px 24px 18px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0d1626, #0b1220);
+  }
+  header h1{
+    margin: 0 0 4px;
+    font-size: 22px;
+    letter-spacing: 0.3px;
+  }
+  header h1 .brk{ color: var(--gold); }
+  header p{
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 13.5px;
+  }
+
+  .wrap{
+    display: flex;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  /* --- rail / stepper --- */
+  .rail{
+    width: 190px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 24px;
+  }
+  .rail-track{
+    position: relative;
+    padding-left: 22px;
+  }
+  .rail-line{
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--border);
+  }
+  .rail-item{
+    position: relative;
+    padding: 8px 0 8px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-radius: 6px;
+    transition: color .15s;
+  }
+  .rail-item:hover{ color: var(--text); }
+  .rail-item .node{
+    position: absolute;
+    left: -22px;
+    top: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--panel-2);
+    border: 2px solid var(--border);
+    font-size: 0;
+  }
+  .rail-item.done .node{ background: var(--teal); border-color: var(--teal); }
+  .rail-item.active{ color: var(--gold); font-weight: 600; }
+  .rail-item.active .node{ background: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(232,176,75,.15); }
+  .rail-item.locked{ color: #465067; cursor: not-allowed; }
+
+  .rail-progress{
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .rail-bar{
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .rail-bar-fill{
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+    width: 0%;
+    transition: width .3s ease;
+  }
+
+  /* --- main lesson panel --- */
+  .main{ flex: 1; min-width: 0; }
+  .lesson-card{
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+  }
+  .eyebrow{
+    color: var(--gold);
+    font-size: 11.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .lesson-title{
+    font-size: 19px;
+    margin: 0 0 10px;
+  }
+  .lesson-body p{
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 14.5px;
+    margin: 0 0 10px;
+  }
+  .lesson-body .muted{ color: var(--text-dim); font-size: 13px; }
+  .tag-pill{
+    display:inline-block;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--teal);
+    padding: 1px 7px;
+    border-radius: 5px;
+    font-size: 12.5px;
+  }
+
+  .editor-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  @media (max-width: 760px){
+    .editor-grid{ grid-template-columns: 1fr; }
+    .wrap{ flex-direction: column; }
+    .rail{ width: 100%; position: static; }
+    .rail-track{ display:flex; flex-wrap:wrap; gap: 4px; padding-left:0; }
+    .rail-line{ display:none; }
+    .rail-item{ padding-left: 20px; }
+  }
+  .pane{
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .pane-label{
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  textarea{
+    width: 100%;
+    height: 190px;
+    background: #0a1120;
+    color: #d7f0ea;
+    border: none;
+    resize: vertical;
+    padding: 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    outline: none;
+  }
+  iframe{
+    width: 100%;
+    height: 190px;
+    border: none;
+    background: #fff;
+  }
+
+  .btn-row{
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  button{
+    font-family: inherit;
+    font-size: 13.5px;
+    padding: 8px 16px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color .15s, transform .1s;
+  }
+  button:hover{ border-color: var(--teal); }
+  button:active{ transform: scale(0.98); }
+  button.primary{
+    background: var(--gold);
+    color: #17120a;
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+  button.primary:hover{ filter: brightness(1.08); }
+  button:disabled{ opacity: .4; cursor: not-allowed; }
+
+  .quiz{
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+  }
+  .quiz-q{ font-size: 14px; margin-bottom: 10px; }
+  .quiz-opt{
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+  }
+  .quiz-opt:hover{ border-color: var(--teal); }
+  .quiz-opt.correct{ border-color: var(--teal); background: rgba(79,209,197,0.12); }
+  .quiz-opt.wrong{ border-color: var(--danger); background: rgba(224,122,122,0.12); }
+  .quiz-feedback{ font-size: 13px; margin-top: 6px; color: var(--text-dim); min-height: 18px; }
+
+  .done-banner{
+    display:none;
+    background: linear-gradient(135deg, rgba(232,176,75,.12), rgba(79,209,197,.10));
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 22px;
+    text-align: center;
+  }
+  .done-banner h2{ margin: 0 0 6px; color: var(--gold); }
+  .done-banner p{ color: var(--text-dim); margin: 0; font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="brk">&lt;</span>HTML in Small Bites<span class="brk">&gt;</span></h1>
+  <p>The ~15 tags that cover 90% of real pages. One at a time. Edit the code, watch it render, move on.</p>
+</header>
+
+<div class="wrap">
+  <div class="rail">
+    <div class="rail-track" id="railTrack"></div>
+    <div class="rail-progress">
+      <span id="progressLabel">0 / 8 done</span>
+      <div class="rail-bar"><div class="rail-bar-fill" id="railFill"></div></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="lessonContainer"></div>
+    <div class="done-banner" id="doneBanner">
+      <h2>That's the core of HTML.</h2>
+      <p>Structure, text, links, images, lists, containers, forms, tables — everything else is just more tags built from the same logic. Go build something real with it.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const lessons = [
+  {
+    id: 0,
+    eyebrow: "Lesson 1 / 8",
+    title: "The skeleton every page needs",
+    tags: ["<!DOCTYPE html>","<html>","<head>","<body>"],
+    explain: `Every HTML file has the same bones: <span class="tag-pill">&lt;!DOCTYPE html&gt;</span> tells the browser "this is HTML5." <span class="tag-pill">&lt;html&gt;</span> wraps everything. <span class="tag-pill">&lt;head&gt;</span> holds info about the page (title, styles) — nothing here is visible. <span class="tag-pill">&lt;body&gt;</span> holds everything you actually see.`,
+    starter: `<!DOCTYPE html>
+<html>
+<head>
+  <title>My Page</title>
+</head>
+<body>
+  Edit this text and it shows up on the right.
+</body>
+</html>`,
+    quiz: {
+      q: "Which tag holds the content people actually see on the page?",
+      options: ["<head>","<body>","<!DOCTYPE html>"],
+      correct: 1
+    }
+  },
+  {
+    id: 1,
+    eyebrow: "Lesson 2 / 8",
+    title: "Headings and paragraphs",
+    tags: ["<h1>–<h6>","<p>"],
+    explain: `<span class="tag-pill">&lt;h1&gt;</span> through <span class="tag-pill">&lt;h6&gt;</span> are headings, biggest to smallest — use them for structure, not just to make text big. <span class="tag-pill">&lt;p&gt;</span> is a paragraph of normal text. Almost every page is just headings and paragraphs stacked on top of each other.`,
+    starter: `<h1>Main Title</h1>
+<h2>A Section</h2>
+<p>This is a normal paragraph of text. Try adding a second paragraph below.</p>`,
+    quiz: {
+      q: "Which heading tag is the biggest / most important?",
+      options: ["<h6>","<h1>","<p>"],
+      correct: 1
+    }
+  },
+  {
+    id: 2,
+    eyebrow: "Lesson 3 / 8",
+    title: "Links — the 'a' tag",
+    tags: ["<a href=\"...\">"],
+    explain: `<span class="tag-pill">&lt;a&gt;</span> makes a clickable link. The destination goes in the <span class="tag-pill">href</span> attribute — the extra bit of info inside the opening tag. This is your first attribute, and most tags can take them.`,
+    starter: `<p>Check out <a href="https://anthropic.com">this site</a> for more.</p>`,
+    quiz: {
+      q: "Where does the link's destination URL go?",
+      options: ["Inside the href attribute","Between <a> and </a>","In a separate <link> tag"],
+      correct: 0
+    }
+  },
+  {
+    id: 3,
+    eyebrow: "Lesson 4 / 8",
+    title: "Images",
+    tags: ["<img src=\"...\" alt=\"...\">"],
+    explain: `<span class="tag-pill">&lt;img&gt;</span> is self-closing — no closing tag needed. <span class="tag-pill">src</span> is where the image file lives, <span class="tag-pill">alt</span> is backup text if it fails to load (and it's what screen readers use).`,
+    starter: `<img src="https://placehold.co/300x150" alt="a placeholder image">`,
+    quiz: {
+      q: "Why does <img> not need a closing tag like </img>?",
+      options: ["It's a mistake in HTML","It's a self-closing / void element by design","Only old browsers need it"],
+      correct: 1
+    }
+  },
+  {
+    id: 4,
+    eyebrow: "Lesson 5 / 8",
+    title: "Lists",
+    tags: ["<ul>","<ol>","<li>"],
+    explain: `<span class="tag-pill">&lt;ul&gt;</span> is an unordered (bullet) list, <span class="tag-pill">&lt;ol&gt;</span> is an ordered (numbered) list. Either way, each item goes inside <span class="tag-pill">&lt;li&gt;</span>.`,
+    starter: `<ul>
+  <li>Weed device</li>
+  <li>Garland machine</li>
+  <li>BSF cultivation</li>
+</ul>`,
+    quiz: {
+      q: "What goes inside a <ul> or <ol>?",
+      options: ["<p> tags","<li> tags","<a> tags"],
+      correct: 1
+    }
+  },
+  {
+    id: 5,
+    eyebrow: "Lesson 6 / 8",
+    title: "Containers — div and span",
+    tags: ["<div>","<span>"],
+    explain: `<span class="tag-pill">&lt;div&gt;</span> is a generic block container — think of it as an invisible box you can group things in and style later. <span class="tag-pill">&lt;span&gt;</span> is the same idea but inline, for wrapping a small piece of text inside a sentence.`,
+    starter: `<div>
+  <h2>Project</h2>
+  <p>This whole block is one <span>div</span>, and the word "div" above is wrapped in a <span>span</span>.</p>
+</div>`,
+    quiz: {
+      q: "What's the main difference between <div> and <span>?",
+      options: ["div is block-level, span is inline","They are identical","span only works inside <p>"],
+      correct: 0
+    }
+  },
+  {
+    id: 6,
+    eyebrow: "Lesson 7 / 8",
+    title: "Forms — collecting input",
+    tags: ["<form>","<input>","<button>","<label>"],
+    explain: `<span class="tag-pill">&lt;form&gt;</span> wraps a set of inputs. <span class="tag-pill">&lt;input&gt;</span> is a field (type="text", type="email", etc). <span class="tag-pill">&lt;label&gt;</span> names a field. <span class="tag-pill">&lt;button&gt;</span> submits or triggers an action.`,
+    starter: `<form>
+  <label>Name: <input type="text"></label><br><br>
+  <label>Email: <input type="email"></label><br><br>
+  <button>Submit</button>
+</form>`,
+    quiz: {
+      q: "Which attribute on <input> controls what kind of field it is (text, email, etc)?",
+      options: ["type","kind","format"],
+      correct: 0
+    }
+  },
+  {
+    id: 7,
+    eyebrow: "Lesson 8 / 8",
+    title: "Tables",
+    tags: ["<table>","<tr>","<td>","<th>"],
+    explain: `<span class="tag-pill">&lt;table&gt;</span> holds the whole table. <span class="tag-pill">&lt;tr&gt;</span> is a table row. <span class="tag-pill">&lt;th&gt;</span> is a header cell (bold, centered by default), <span class="tag-pill">&lt;td&gt;</span> is a normal data cell.`,
+    starter: `<table border="1">
+  <tr>
+    <th>Task</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>Learn HTML</td>
+    <td>In progress</td>
+  </tr>
+</table>`,
+    quiz: {
+      q: "Which tag is used for a header cell in a table?",
+      options: ["<td>","<tr>","<th>"],
+      correct: 2
+    }
+  }
+];
+
+let currentLesson = 0;
+let completed = new Array(lessons.length).fill(false);
+
+function renderRail(){
+  const track = document.getElementById('railTrack');
+  track.innerHTML = '';
+  lessons.forEach((l, i) => {
+    const item = document.createElement('div');
+    let cls = 'rail-item';
+    if (i === currentLesson) cls += ' active';
+    if (completed[i]) cls += ' done';
+    const locked = i > 0 && !completed[i-1] && i !== currentLesson;
+    if (locked) cls += ' locked';
+    item.className = cls;
+    item.innerHTML = `<span class="node"></span>${l.title}`;
+    if (!locked){
+      item.onclick = () => { currentLesson = i; renderAll(); };
+    }
+    track.appendChild(item);
+  });
+  const doneCount = completed.filter(Boolean).length;
+  document.getElementById('progressLabel').textContent = `${doneCount} / ${lessons.length} done`;
+  document.getElementById('railFill').style.width = (doneCount / lessons.length * 100) + '%';
+}
+
+function updatePreview(code, iframeEl){
+  iframeEl.srcdoc = code;
+}
+
+function renderLesson(){
+  const container = document.getElementById('lessonContainer');
+  const banner = document.getElementById('doneBanner');
+  if (currentLesson >= lessons.length){
+    container.innerHTML = '';
+    banner.style.display = 'block';
+    return;
+  }
+  banner.style.display = 'none';
+  const l = lessons[currentLesson];
+  container.innerHTML = `
+    <div class="lesson-card">
+      <div class="eyebrow">${l.eyebrow}</div>
+      <h2 class="lesson-title">${l.title}</h2>
+      <div class="lesson-body">
+        <p>${l.explain}</p>
+      </div>
+      <div class="editor-grid">
+        <div class="pane">
+          <div class="pane-label">Your code</div>
+          <textarea id="codeInput" class="code-font" spellcheck="false">${l.starter}</textarea>
+        </div>
+        <div class="pane">
+          <div class="pane-label">Live preview</div>
+          <iframe id="previewFrame"></iframe>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="runBtn">Run ▶</button>
+        <button id="resetBtn">Reset</button>
+        <div style="flex:1"></div>
+        <button id="prevBtn" ${currentLesson === 0 ? 'disabled' : ''}>← Back</button>
+      </div>
+      <div class="quiz">
+        <div class="quiz-q">${l.quiz.q}</div>
+        <div id="quizOpts"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+      </div>
+    </div>
+  `;
+
+  const textarea = document.getElementById('codeInput');
+  const frame = document.getElementById('previewFrame');
+  updatePreview(textarea.value, frame);
+
+  document.getElementById('runBtn').onclick = () => updatePreview(textarea.value, frame);
+  textarea.addEventListener('input', () => updatePreview(textarea.value, frame));
+  document.getElementById('resetBtn').onclick = () => {
+    textarea.value = l.starter;
+    updatePreview(textarea.value, frame);
+  };
+  document.getElementById('prevBtn').onclick = () => {
+    if (currentLesson > 0){ currentLesson--; renderAll(); }
+  };
+
+  const optsWrap = document.getElementById('quizOpts');
+  const feedback = document.getElementById('quizFeedback');
+  l.quiz.options.forEach((opt, idx) => {
+    const b = document.createElement('button');
+    b.className = 'quiz-opt';
+    b.textContent = opt;
+    b.onclick = () => {
+      const allOpts = optsWrap.querySelectorAll('.quiz-opt');
+      allOpts.forEach(o => o.disabled = true);
+      if (idx === l.quiz.correct){
+        b.classList.add('correct');
+        feedback.textContent = "Correct. Moving on unlocks the next lesson.";
+        completed[currentLesson] = true;
+        renderRail();
+        setTimeout(() => {
+          currentLesson++;
+          renderAll();
+        }, 700);
+      } else {
+        b.classList.add('wrong');
+        allOpts[l.quiz.correct].classList.add('correct');
+        feedback.textContent = "Not quite — the correct one is highlighted. Take a second, then continue.";
+        completed[currentLesson] = true;
+        renderRail();
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+}
+
+function renderAll(){
+  renderRail();
+  renderLesson();
+}
+
+renderAll();
+</script>
+
+</body>
+</html>
