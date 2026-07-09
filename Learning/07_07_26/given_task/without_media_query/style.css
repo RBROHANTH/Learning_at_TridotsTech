@@ -1,0 +1,186 @@
+#header{
+    display: flex;
+    background-color: #635f5f;
+    justify-content: space-between;
+    padding: 20px 60px;
+}
+
+#nav{
+    list-style: none;
+    padding: 0px;
+    gap: 25px;
+    display: flex;
+    margin: 0;
+}
+
+#nav a{
+    text-decoration: none;
+    color:black;
+}
+#nav a:hover{
+    color: aliceblue;
+}
+
+#logo{
+    color: white;
+    font-weight: bold;
+}
+
+#catagory_nav{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: aliceblue;
+    border: 1px black solid;
+}
+
+#catagory_nav li a{
+display: block;
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-bottom: 1px black solid;
+  color: blue;
+}
+#catagory_nav:last-child{
+    border-bottom: none;
+}
+
+#corrosal{
+    width: 900px;
+    height: 400px;
+    display: flex;
+    gap:10px;
+    anchor-name: --my-carousel;
+    /* //// */
+    overflow-x: scroll;
+    scroll-snap-type:x mandatory;
+    scrollbar-color: 0;
+    scroll-marker-group: after;
+    /* //// */
+}
+#corrosal::scroll-button(*){
+    border: 0;
+    font-size: 2rem;
+    background: none;
+    color: rgb(250, 250, 250);
+    opacity: 0.7;
+    cursor: pointer;
+    position: absolute;
+    position-anchor: --my-carousel;
+
+}
+#corrosal::scroll-button(*):hover,
+#corrosal::scroll-button(*):focus {
+  opacity: 1;
+}
+
+#corrosal::scroll-button(*):active {
+  translate: 1px 1px;
+}
+
+#corrosal::scroll-button(*):disabled {
+  opacity: 0.2;
+  cursor: unset;
+}
+
+#corrosal::scroll-button(left) {
+  right: calc(anchor(left) - 70px);
+  bottom: calc(anchor(top) - 250px);
+  content: "◄";
+}
+
+#corrosal::scroll-button(right) {
+  content: "►";
+  left: calc(anchor(right) - 70px);
+  bottom: calc(anchor(top) - 250px);
+}
+#corrosal::scroll-marker-group {
+  position: absolute;
+  position-anchor: --my-carousel;
+  top: calc(anchor(bottom) - 70px);
+  justify-self: anchor-center;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+#corrosal li::scroll-marker {
+  content: attr(data-accName);
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 50%;
+  overflow: hidden;
+  text-indent: 16px;
+}
+#corrosal li::scroll-marker:target-current {
+  background-color: rgb(255, 255, 255);
+}
+#corrosal li{
+    list-style-type:none;
+    border: 1px solid black;
+    flex: 0 0 100% ;
+    scroll-snap-align:center;
+}
+
+#card_holder{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.card{
+    border: 1px solid grey;
+    border-radius: 10px;
+    height: 430px;
+    width: 300px;
+}
+.card img{
+    height: 200px;
+    width:100%;
+    border-radius:10px 10px 0 0;
+}
+.card h2{
+    font-weight:bolder;
+    color: blue;
+    font-family:'Courier New';
+    padding-left: 10px;
+}
+.card h4{
+    color: red;
+    padding-left: 10px;
+}
+.card p{
+    padding-left: 10px;
+}
+.card_footer{
+    height: 47.5px;
+    background-color: lightgray;
+    border: 1px solid gray;
+    border-radius: 0 0 10px 10px;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+}
+
+.card_footer span{
+    padding-left: 30px;
+    font-size: larger;
+}
+
+#footer{
+    background-color: #635f5f;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 50px;
+    padding: 5px;
+}
+
+#footer p{
+    margin: 0;
+}

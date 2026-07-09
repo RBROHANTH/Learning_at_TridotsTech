@@ -1,0 +1,248 @@
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tridots Internship Assignment - Essential Python Code Snippets</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --container-bg: #ffffff;
+            --text-color: #334155;
+            --heading-color: #1e293b;
+            --primary-color: #2563eb;
+            --accent-color: #0ea5e9;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --border-color: #e2e8f0;
+            --comment-color: #6c7086;
+            --keyword-color: #cba6f7;
+            --string-color: #a6e3a1;
+            --number-color: #f9e2af;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--heading-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: var(--heading-color);
+            font-size: 1.5rem;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 24px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .essential-tag {
+            font-size: 0.85rem;
+            background-color: #eff6ff;
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+            border: 1px solid #dbeafe;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 25px;
+            border: 1px solid #313244;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        code {
+            font-family: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+            font-size: 0.95rem;
+            color: var(--code-text);
+        }
+
+        /* Basic syntax highlight colors using standard CSS selectors inside pre */
+        .c { color: var(--comment-color); font-style: italic; }
+        .k { color: var(--keyword-color); font-weight: bold; }
+        .s { color: var(--string-color); }
+        .n { color: var(--number-color); }
+
+        .pro-tip {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 40px;
+        }
+
+        .pro-tip h3 {
+            margin-top: 0;
+            color: #14532d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tridots Internship Guide: Essential Python Code Snippets</h1>
+    <p>Congrats on your internship at <strong>Tridots</strong>! Since you are handling 10 different CRUD (Create, Read, Update, Delete) and state-tracking assignments, you don't need 10 completely different codebases. They all boil down to a few core Python mechanics: <strong>dictionaries for fast lookups, lists of objects, input validation, and conditional state updates.</strong></p>
+    
+    <p>Instead of overwhelming you, here are the essential, structural Python code snippets you <em>must</em> know to build all 10 systems cleanly.</p>
+
+    <h2>1. The Core Data Structure: Nested Dictionaries</h2>
+    <div class="essential-tag">Essential for: Student, Employee, Contact, Inventory Systems</div>
+    <p>For systems like the Student, Employee, Contact, and Inventory systems, a nested dictionary is the cleanest way to store data using a unique ID (like a roll number, employee ID, or barcode) as the key.</p>
+    <pre><code><span class="c"># Database initialization</span>
+database = {}
+
+<span class="c"># 1. Add / Update (Create/Update)</span>
+<span class="c"># If the ID exists, it updates; if not, it creates a new entry.</span>
+database[<span class="s">"STU101"</span>] = {<span class="s">"name"</span>: <span class="s">"Alice"</span>, <span class="s">"marks"</span>: <span class="n">85</span>, <span class="s">"grade"</span>: <span class="s">"A"</span>}
+
+<span class="c"># 2. Search / Read</span>
+student_id = <span class="s">"STU101"</span>
+<span class="k">if</span> student_id <span class="k">in</span> database:
+    print(f<span class="s">"Found: {database[student_id]['name']}"</span>)
+<span class="k">else</span>:
+    print(<span class="s">"Record not found."</span>)
+
+<span class="c"># 3. Delete</span>
+<span class="c"># Using .pop() with a default value prevents KeyError crashes if the ID doesn't exist</span>
+removed = database.pop(<span class="s">"STU101"</span>, None)</code></pre>
+
+    <h2>2. State & Balance Modifications (Atomic Updates)</h2>
+    <div class="essential-tag">Essential for: ATM, Expense Tracker, Inventory (Stock)</div>
+    <p>For the ATM, Expense Tracker, and Inventory (Stock) systems, you need to safely adjust numeric values while validating limits (e.g., preventing a negative balance or selling more stock than you have).</p>
+    <pre><code>balance = <span class="n">1000.0</span>   <span class="c"># Or stock = 50</span>
+withdraw_amount = <span class="n">400.0</span>
+
+<span class="c"># Always check the condition BEFORE modifying the state</span>
+<span class="k">if</span> withdraw_amount &lt;= <span class="n">0</span>:
+    print(<span class="s">"Invalid amount."</span>)
+<span class="k">elif</span> withdraw_amount &gt; balance:
+    print(<span class="s">"Insufficient funds."</span>)
+<span class="k">else</span>:
+    balance -= withdraw_amount
+    print(f<span class="s">"Success! New balance: {balance}"</span>)</code></pre>
+
+    <h2>3. Modifying Lists Inside Objects</h2>
+    <div class="essential-tag">Essential for: Library, Railway, Hotel Booking</div>
+    <p>For the Library, Railway, and Hotel systems, you are tracking the state of an asset (Book, Seat, Room) that toggles between available and unavailable.</p>
+    <pre><code><span class="c"># A dictionary representing rooms or seats</span>
+rooms = {
+    <span class="s">"101"</span>: {<span class="s">"type"</span>: <span class="s">"Deluxe"</span>, <span class="s">"is_booked"</span>: False},
+    <span class="s">"102"</span>: {<span class="s">"type"</span>: <span class="s">"Suite"</span>, <span class="s">"is_booked"</span>: True}
+}
+
+room_to_book = <span class="s">"101"</span>
+
+<span class="c"># Check-in / Booking logic</span>
+<span class="k">if</span> room_to_book <span class="k">in</span> rooms:
+    <span class="k">if not</span> rooms[room_to_book][<span class="s">"is_booked"</span>]:
+        rooms[room_to_book][<span class="s">"is_booked"</span>] = True
+        print(f<span class="s">"Room {room_to_book} successfully booked!"</span>)
+    <span class="k">else</span>:
+        print(<span class="s">"Sorry, room is already occupied."</span>)</code></pre>
+
+    <h2>4. Categorized Filtering & Aggregation</h2>
+    <div class="essential-tag">Essential for: Expense Tracker, Quiz Application</div>
+    <p>For the Expense Tracker, you need to filter data based on a category and sum up totals.</p>
+    <pre><code>expenses = [
+    {<span class="s">"amount"</span>: <span class="n">50</span>, <span class="s">"category"</span>: <span class="s">"Food"</span>},
+    {<span class="s">"amount"</span>: <span class="n">20</span>, <span class="s">"category"</span>: <span class="s">"Transport"</span>},
+    {<span class="s">"amount"</span>: <span class="n">100</span>, <span class="s">"category"</span>: <span class="s">"Food"</span>},
+]
+
+<span class="c"># 1. Calculate Total Expense</span>
+total = sum(item[<span class="s">"amount"</span>] <span class="k">for</span> item <span class="k">in</span> expenses)
+
+<span class="c"># 2. Search/Filter by Category</span>
+search_category = <span class="s">"Food"</span>
+filtered_expenses = [item <span class="k">for</span> item <span class="k">in</span> expenses <span class="k">if</span> item[<span class="s">"category"</span>] == search_category]</code></pre>
+
+    <h2>5. Simple Iteration Mapping</h2>
+    <div class="essential-tag">Essential for: Quiz Application</div>
+    <p>For the Quiz Application, you need to pair a loop with data tuple/dictionary unpacking to evaluate user input dynamically.</p>
+    <pre><code>quiz_bank = [
+    {<span class="s">"q"</span>: <span class="s">"What is 2+2?"</span>, <span class="s">"a"</span>: <span class="s">"4"</span>},
+    {<span class="s">"q"</span>: <span class="s">"What language is this?"</span>, <span class="s">"a"</span>: <span class="s">"python"</span>}
+]
+
+score = <span class="n">0</span>
+<span class="k">for</span> item <span class="k">in</span> quiz_bank:
+    print(item[<span class="s">"q"</span>])
+    user_ans = input(<span class="s">"Your answer: "</span>).strip().lower()
+    
+    <span class="k">if</span> user_ans == item[<span class="s">"a"</span>].lower():
+        score += <span class="n">1</span></code></pre>
+
+    <div class="pro-tip">
+        <h3>💡 Intern Pro-Tip for Tridots Assignments:</h3>
+        <p>Instead of writing endless <code>if/elif</code> blocks for your command-line menus, look into <strong>Python's Match-Case</strong> (introduced in Python 3.10). It will make your internship code look incredibly clean and professional:</p>
+        <pre><code>choice = input(<span class="s">"Enter choice (1-4): "</span>)
+<span class="k">match</span> choice:
+    <span class="k">case</span> <span class="s">"1"</span>: check_balance()
+    <span class="k">case</span> <span class="s">"2"</span>: deposit_money()
+    <span class="k">case</span> <span class="s">"3"</span>: withdraw_money()
+    <span class="k">case</span> <span class="s">"4"</span>: print(<span class="s">"Exiting..."</span>)
+    <span class="k">case</span> _: print(<span class="s">"Invalid option chosen."</span>) <span class="c"># Fallback wildcard</span></code></pre>
+    </div>
+</div>
+
+</body>
+</html>
+"""
+
+with open("tridots_python_guide.html", "w") as f:
+    f.write(html_content)

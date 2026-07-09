@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flock Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EC;--warm:#EDE5D8;--warm2:#E4D8C4;
+  --earth:#8B6F47;--earth-dark:#5C4730;--earth-light:#C4A882;
+  --green:#4A6741;--green-light:#7A9B6F;--green-pale:#E8F0E6;
+  --rust:#B8521A;--rust-light:#F0D5C4;
+  --gold:#C9922A;--gold-light:#F5E8CE;
+  --purple:#6B5B8B;--purple-light:#EDE8F5;
+  --blue:#3A6B8B;--blue-light:#E4EEF5;
+  --text:#2C1F0F;--text-mid:#6B5240;--text-soft:#A08878;
+  --border:rgba(139,111,71,0.18);--border-strong:rgba(139,111,71,0.38);
+  --sh:0 2px 16px rgba(44,31,15,0.07);--sh-lg:0 8px 40px rgba(44,31,15,0.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.site-header{position:relative;width:100%;height:320px;overflow:hidden;background:#2a1c0c;cursor:pointer}
+.header-img{width:100%;height:100%;object-fit:cover;opacity:.72;transition:opacity .3s}
+.hdr-grad{position:absolute;inset:0;background:linear-gradient(160deg,rgba(20,12,4,.25) 0%,rgba(20,12,4,.7) 100%)}
+.hdr-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+.hdr-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:600;color:#fff;letter-spacing:-1px;text-shadow:0 3px 16px rgba(0,0,0,.45);line-height:1}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.65);letter-spacing:.14em;text-transform:uppercase;font-weight:300;margin-top:10px}
+.hdr-upload{position:absolute;bottom:16px;right:16px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);color:#fff;font-size:11px;font-family:'DM Sans',sans-serif;padding:5px 13px;border-radius:20px;cursor:pointer;backdrop-filter:blur(6px);letter-spacing:.05em;transition:background .2s}
+.hdr-upload:hover{background:rgba(255,255,255,.24)}
+.hidden-file{display:none}
+
+/* STICKY NAV */
+.sticky-nav{position:sticky;top:0;z-index:100;background:rgba(247,243,236,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.tab-bar{display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;max-width:1100px;margin:0 auto}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:88px;padding:14px 8px;border:none;border-bottom:2px solid transparent;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:400;color:var(--text-soft);transition:all .2s;white-space:nowrap;text-align:center}
+.tab:hover{color:var(--text-mid);background:rgba(139,111,71,.05)}
+.tab.active{color:var(--earth-dark);font-weight:500;border-bottom-color:var(--earth)}
+
+/* LAYOUT */
+.app{max-width:1100px;margin:0 auto;padding:2.5rem 2rem 5rem}
+.section{display:none;animation:fadeUp .28s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* COLUMNS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;align-items:start}
+@media(max-width:740px){.two-col,.three-col{grid-template-columns:1fr}}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.75rem;border-bottom:1px solid var(--border);padding-bottom:1rem;gap:1rem;flex-wrap:wrap}
+.sec-hdr h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--earth-dark);line-height:1}
+.sec-hdr p{font-size:12.5px;color:var(--text-soft);margin-top:4px}
+
+/* METRICS */
+.metric-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:2rem}
+@media(max-width:900px){.metric-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:500px){.metric-strip{grid-template-columns:repeat(2,1fr)}}
+.mc{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 14px 14px;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.mc:hover{box-shadow:var(--sh-lg);transform:translateY(-1px)}
+.mc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
+.mc.c-egg::after{background:var(--green)}.mc.c-hen::after{background:var(--gold)}
+.mc.c-chk::after{background:var(--earth-light)}.mc.c-sal::after{background:var(--purple)}
+.mc.c-fdd::after{background:var(--blue)}.mc.c-los::after{background:var(--rust)}
+.mc-icon{font-size:18px;margin-bottom:6px}
+.mc-val{font-family:'Playfair Display',serif;font-size:24px;color:var(--text);line-height:1}
+.mc-lbl{font-size:11px;color:var(--text-soft);margin-top:4px}
+.mc-sub{font-size:10px;color:var(--text-soft);margin-top:2px}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:1.5rem 1.75rem;margin-bottom:1.25rem;box-shadow:var(--sh)}
+.card-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--earth-dark);margin-bottom:1.1rem;display:flex;align-items:center;gap:8px}
+.card.al-green{border-left:3px solid var(--green)}
+.card.al-gold{border-left:3px solid var(--gold)}
+.card.al-rust{border-left:3px solid var(--rust)}
+.card.al-purple{border-left:3px solid var(--purple)}
+.card.al-blue{border-left:3px solid var(--blue)}
+.card.al-earth{border-left:3px solid var(--earth)}
+
+/* FORM */
+.fg{margin-bottom:1rem}
+.flbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-soft);font-weight:500;margin-bottom:5px}
+.finp,.fsel{width:100%;padding:9px 13px;border:1px solid var(--border-strong);border-radius:10px;background:var(--cream);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+.finp:focus,.fsel:focus{border-color:var(--earth);box-shadow:0 0 0 3px rgba(139,111,71,.1)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:520px){.fg2,.fg3{grid-template-columns:1fr}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:10px;border:1px solid var(--border-strong);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text-mid);transition:all .2s}
+.btn:hover{background:var(--warm);color:var(--text)}
+.btn-earth{background:var(--earth);color:#fff;border-color:var(--earth-dark)}.btn-earth:hover{background:var(--earth-dark)}
+.btn-green{background:var(--green);color:#fff;border-color:var(--green)}.btn-green:hover{background:var(--green-light)}
+.btn-rust{background:var(--rust-light);color:var(--rust);border-color:rgba(184,82,26,.3)}.btn-rust:hover{background:var(--rust);color:#fff}
+.btn-purple{background:var(--purple-light);color:var(--purple);border-color:rgba(107,91,139,.3)}.btn-purple:hover{background:var(--purple);color:#fff}
+.btn-blue{background:var(--blue-light);color:var(--blue);border-color:rgba(58,107,139,.3)}.btn-blue:hover{background:var(--blue);color:#fff}
+.btn-gold{background:var(--gold-light);color:#7a5a10;border-color:rgba(201,146,42,.3)}.btn-gold:hover{background:var(--gold);color:#fff}
+.btn-sm{padding:6px 13px;font-size:12px;border-radius:8px}
+.btn-xs{padding:4px 10px;font-size:11px;border-radius:7px}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:500;white-space:nowrap}
+.b-green{background:var(--green-pale);color:var(--green)}
+.b-rust{background:var(--rust-light);color:var(--rust)}
+.b-gold{background:var(--gold-light);color:#7a5a10}
+.b-earth{background:var(--warm);color:var(--earth-dark)}
+.b-purple{background:var(--purple-light);color:var(--purple)}
+.b-blue{background:var(--blue-light);color:var(--blue)}
+.b-gray{background:#f0ece6;color:#7a6a58}
+
+/* LOG ROWS */
+.log-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;flex-wrap:wrap}
+.log-row:last-child{border-bottom:none}
+.log-main{flex:1;min-width:140px;color:var(--text)}
+.log-sub{font-size:11px;color:var(--text-soft)}
+
+/* PROGRESS */
+.prog-track{height:7px;background:var(--warm);border-radius:4px;margin:5px 0 3px}
+.prog-fill{height:100%;border-radius:4px;background:var(--green);transition:width .6s}
+.prog-pct{font-size:11px;color:var(--text-soft)}
+
+/* BREEDER CARDS */
+.breeder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:1.5rem}
+.breeder-card{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.breeder-card:hover{box-shadow:var(--sh-lg);transform:translateY(-2px)}
+.bp-wrap{width:100%;height:160px;background:var(--warm);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.bp-wrap img{width:100%;height:100%;object-fit:cover}
+.bp-ph{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-soft);font-size:12px}
+.bp-ph .ph-ico{font-size:34px;opacity:.45}
+.bp-overlay{position:absolute;inset:0;background:rgba(44,31,15,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;color:#fff;font-size:12px;font-weight:500;letter-spacing:.05em}
+.bp-wrap:hover .bp-overlay{opacity:1}
+.bp-info{padding:12px 15px}
+.bp-name{font-weight:500;font-size:14px;color:var(--text)}
+.bp-id{font-size:10.5px;color:var(--text-soft);font-family:monospace;background:var(--warm);display:inline-block;padding:1px 7px;border-radius:5px;margin:3px 0 5px}
+.bp-stats{font-size:11.5px;color:var(--text-soft);margin-bottom:6px}
+.bp-bar{height:4px;background:var(--warm);border-radius:2px}
+.bp-bar-fill{height:100%;border-radius:2px;background:var(--green);transition:width .5s}
+.bp-status{display:inline-block;margin-top:7px;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:500}
+
+/* BATCH CARDS */
+.batch-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:10px}
+.batch-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.batch-title{font-weight:500;font-size:14px;color:var(--text)}
+.batch-id-tag{font-size:10.5px;color:var(--text-soft);font-family:monospace;background:var(--warm);padding:2px 8px;border-radius:5px;margin-top:3px;display:inline-block}
+.batch-meta{font-size:11.5px;color:var(--text-soft);margin-top:3px}
+.chick-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.chick-chip{font-size:10.5px;font-family:monospace;background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:2px 7px;color:var(--text-mid);cursor:default}
+.chick-chip.sold{background:#f0ece6;color:var(--text-soft);text-decoration:line-through;opacity:.5}
+.chick-chip.promoted{background:var(--gold-light);border-color:rgba(201,146,42,.35);color:#7a5a10}
+
+/* RANGE PICKER */
+.range-picker{background:var(--cream);border:1px solid var(--border-strong);border-radius:14px;padding:16px 18px}
+.range-hint{font-size:12px;color:var(--text-soft);margin-bottom:10px;line-height:1.6}
+.range-hint code{background:var(--warm);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:var(--text-mid)}
+.range-input-wrap{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.range-input{flex:1;min-width:180px;padding:9px 13px;border:1px solid var(--border-strong);border-radius:10px;background:#fff;color:var(--text);font-family:monospace;font-size:14px;outline:none;transition:border-color .2s;letter-spacing:.04em}
+.range-input:focus{border-color:var(--earth);box-shadow:0 0 0 3px rgba(139,111,71,.1)}
+.range-preview{display:flex;flex-wrap:wrap;gap:5px;min-height:26px}
+.rp-chip{font-size:11px;font-family:monospace;background:#fff;border:1px solid var(--border-strong);border-radius:6px;padding:3px 9px;color:var(--text-mid)}
+.rp-chip.ok{background:var(--green-pale);border-color:rgba(74,103,65,.3);color:var(--green)}
+.rp-chip.err{background:var(--rust-light);border-color:rgba(184,82,26,.3);color:var(--rust)}
+.rp-chip.dup{background:var(--gold-light);border-color:rgba(201,146,42,.3);color:#7a5a10}
+.range-summary{font-size:12px;color:var(--text-soft);margin-top:8px;font-weight:500}
+
+/* FEED */
+.feed-type-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.feed-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.feed-info{flex:1}
+.feed-name-txt{font-weight:500;font-size:14px;color:var(--text)}
+.feed-cost-txt{font-size:12px;color:var(--text-soft)}
+.feed-log-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;flex-wrap:wrap}
+.feed-log-row:last-child{border-bottom:none}
+
+/* LOSS BARS */
+.cause-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cause-lbl{font-size:13px;min-width:100px;text-transform:capitalize;color:var(--text-mid)}
+.cause-bar-wrap{flex:1;height:8px;background:var(--warm);border-radius:4px;overflow:hidden}
+.cause-bar{height:100%;border-radius:4px;background:var(--rust)}
+.cause-n{font-size:12px;color:var(--text-soft);min-width:28px;text-align:right}
+
+/* PROTECT */
+.prot-card{border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px}
+.prot-head{padding:14px 18px;display:flex;align-items:center;gap:10px}
+.prot-head h3{font-size:15px;font-weight:500;flex:1}
+.prot-body{padding:0 18px 14px;font-size:13px;color:var(--text-mid);line-height:1.9}
+.prot-body li{list-style:none;padding-left:16px;position:relative;margin-bottom:4px}
+.prot-body li::before{content:'·';position:absolute;left:0;color:var(--earth-light)}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:1.2rem 0}
+
+/* EMPTY */
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--text-soft);font-size:13.5px}
+.empty-ico{font-size:40px;margin-bottom:10px;opacity:.38}
+
+/* SECTION LABEL */
+.sec-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-soft);margin-bottom:12px;font-weight:500}
+
+/* MODALS */
+.modal-bg{position:fixed;inset:0;background:rgba(44,31,15,.45);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal{background:#fff;border-radius:20px;padding:2rem;max-width:440px;width:90%;box-shadow:var(--sh-lg)}
+.modal h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--earth-dark);margin-bottom:.6rem}
+.modal-desc{font-size:12.5px;color:var(--text-soft);margin-bottom:1.2rem}
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-soft);margin-top:-4px}
+
+/* FINANCIALS GRID */
+.fin-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.fin-cell{padding:14px 8px;border-radius:12px}
+.fin-val{font-family:'Playfair Display',serif;font-size:22px}
+.fin-lbl{font-size:11px;color:var(--text-soft);margin-top:4px}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--warm2);border-radius:3px}
+
+/* FEED COLORS */
+.fc0{background:#4A6741}.fc1{background:#C9922A}.fc2{background:#3A6B8B}
+.fc3{background:#B8521A}.fc4{background:#6B5B8B}.fc5{background:#7A9B6F}.fc6{background:#8B6F47}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header" onclick="document.getElementById('hdr-file').click()">
+  <img id="hdr-img" class="header-img" src="" alt="" style="display:none">
+  <div id="hdr-bg" style="position:absolute;inset:0;background:linear-gradient(135deg,#2a1c0c 0%,#5c3d18 55%,#2a1c0c 100%)"></div>
+  <div class="hdr-grad"></div>
+  <div class="hdr-content">
+    <div class="hdr-title">🐓 Flock Register</div>
+    <div class="hdr-sub">Homestead Management &nbsp;·&nbsp; Bred with Care</div>
+  </div>
+  <button class="hdr-upload" onclick="event.stopPropagation();document.getElementById('hdr-file').click()">✦ Change header photo</button>
+</div>
+<input type="file" id="hdr-file" class="hidden-file" accept="image/*" onchange="setHdrPhoto(this)">
+
+<!-- NAV -->
+<div class="sticky-nav">
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="tab" onclick="switchTab('breeders')">Breeders</button>
+    <button class="tab" onclick="switchTab('eggs')">Eggs</button>
+    <button class="tab" onclick="switchTab('chicks')">Chicks</button>
+    <button class="tab" onclick="switchTab('sales')">Sales</button>
+    <button class="tab" onclick="switchTab('feed')">Feed</button>
+    <button class="tab" onclick="switchTab('losses')">Losses</button>
+    <button class="tab" onclick="switchTab('protection')">Protection</button>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- ══ DASHBOARD ══ -->
+<div id="dashboard" class="section active">
+  <div class="sec-hdr"><div><h2>Today's overview</h2><p id="dash-date"></p></div></div>
+  <div class="metric-strip" id="metrics"></div>
+  <div class="two-col">
+    <div class="card al-green"><div class="card-title">📈 Flock health</div><div id="flock-health"></div></div>
+    <div class="card al-gold"><div class="card-title">💰 Financials</div><div id="financials"></div></div>
+  </div>
+  <div class="card"><div class="card-title">📋 Recent activity</div><div id="activity-log"></div></div>
+</div>
+
+<!-- ══ BREEDERS ══ -->
+<div id="breeders" class="section">
+  <div class="sec-hdr">
+    <div><h2>Breeders</h2><p>Roosters &amp; hens — tap any photo card to upload</p></div>
+    <button class="btn btn-earth btn-sm" onclick="showAddRooster()">+ Add rooster</button>
+  </div>
+  <div class="sec-label">Roosters</div>
+  <div class="breeder-grid" id="rooster-list"></div>
+  <div id="rooster-file-inputs"></div>
+  <div class="divider"></div>
+  <div class="sec-label">Hens</div>
+  <div class="breeder-grid" id="hen-list"></div>
+  <div id="hen-file-inputs"></div>
+  <div class="card al-earth" style="margin-top:.5rem">
+    <div class="card-title">➕ Add a hen</div>
+    <div class="fg3">
+      <div class="fg"><label class="flbl">Name</label><input class="finp" id="new-hen-name" placeholder="e.g. Goldie"></div>
+      <div class="fg"><label class="flbl">Breeder ID</label><input class="finp" id="new-hen-bid" placeholder="e.g. H4"></div>
+      <div class="fg"><label class="flbl">Breed (optional)</label><input class="finp" id="new-hen-breed" placeholder="e.g. Country fowl"></div>
+    </div>
+    <button class="btn btn-earth" onclick="addHen()">Add hen</button>
+  </div>
+</div>
+
+<!-- ══ EGGS ══ -->
+<div id="eggs" class="section">
+  <div class="sec-hdr"><div><h2>Egg log</h2><p>Each hen yields ~13 eggs per clutch · 4 clutches per year</p></div></div>
+  <div class="two-col">
+    <div class="card al-green">
+      <div class="card-title">✏️ Log a collection</div>
+      <div class="fg2">
+        <div class="fg"><label class="flbl">Date</label><input class="finp" type="date" id="egg-date"></div>
+        <div class="fg"><label class="flbl">Hen</label><select class="fsel" id="egg-hen"></select></div>
+      </div>
+      <div class="fg2">
+        <div class="fg"><label class="flbl">Eggs collected</label><input class="finp" type="number" id="egg-count" min="1" max="20" value="1"></div>
+        <div class="fg"><label class="flbl">Purpose</label><select class="fsel" id="egg-purpose"><option value="hatching">For hatching</option><option value="eating">For eating</option><option value="selling">For selling</option></select></div>
+      </div>
+      <button class="btn btn-green" onclick="logEgg()">Save →</button>
+    </div>
+    <div class="card"><div class="card-title">📜 History</div><div id="egg-log-list"></div></div>
+  </div>
+</div>
+
+<!-- ══ CHICKS ══ -->
+<div id="chicks" class="section">
+  <div class="sec-hdr"><div><h2>Chick batches</h2><p>Track each hatch · ID format: RoosterID-HenID-BatchID-RollNo</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="card al-earth">
+        <div class="card-title">🐣 Add a batch</div>
+        <div class="fg2">
+          <div class="fg"><label class="flbl">Hatch date</label><input class="finp" type="date" id="chick-date"></div>
+          <div class="fg"><label class="flbl">Rooster</label><select class="fsel" id="chick-rooster"></select></div>
+        </div>
+        <div class="fg2">
+          <div class="fg"><label class="flbl">Hen</label><select class="fsel" id="chick-hen"></select></div>
+          <div class="fg"><label class="flbl">Chicks hatched</label><input class="finp" type="number" id="chick-count" min="1" max="30" value="8"></div>
+        </div>
+        <button class="btn btn-earth" onclick="addBatch()">Add batch →</button>
+      </div>
+      <div class="card" style="background:var(--cream)">
+        <div class="card-title" style="font-size:15px">📅 Growth stages</div>
+        <div style="display:grid;gap:8px">
+          <div style="display:flex;gap:12px;align-items:center;font-size:13px"><span style="min-width:80px;color:var(--text-soft)">0–4 wks</span><span class="badge b-earth">Brooder</span></div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:13px"><span style="min-width:80px;color:var(--text-soft)">4–8 wks</span><span class="badge b-gold">Young chick</span></div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:13px"><span style="min-width:80px;color:var(--text-soft)">8–16 wks</span><span class="badge b-rust">Pullet/cockerel</span></div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:13px"><span style="min-width:80px;color:var(--text-soft)">16–20 wks</span><span class="badge b-green">Near laying</span></div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:13px"><span style="min-width:80px;color:var(--text-soft)">20+ wks</span><span class="badge b-green">Adult</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="chick-batches"></div>
+  </div>
+</div>
+
+<!-- ══ SALES ══ -->
+<div id="sales" class="section">
+  <div class="sec-hdr"><div><h2>Sales log</h2><p>Select chick IDs using range notation — like printing pages</p></div></div>
+  <div class="two-col">
+    <div class="card al-purple">
+      <div class="card-title">🧾 Record a sale</div>
+      <div class="fg2">
+        <div class="fg"><label class="flbl">Date</label><input class="finp" type="date" id="sale-date"></div>
+        <div class="fg"><label class="flbl">Batch</label><select class="fsel" id="sale-batch" onchange="onSaleBatchChange()"></select></div>
+      </div>
+      <div class="fg2">
+        <div class="fg"><label class="flbl">Buyer name</label><input class="finp" id="sale-buyer" placeholder="e.g. Ravi Kumar"></div>
+        <div class="fg"><label class="flbl">Price per chick (₹)</label><input class="finp" type="number" id="sale-price" min="0" value="80" oninput="onRangeInput()"></div>
+      </div>
+
+      <!-- RANGE PICKER WIDGET -->
+      <div class="fg">
+        <label class="flbl">Roll numbers to sell</label>
+        <div class="range-picker">
+          <div class="range-hint">
+            Enter like print page ranges:<br>
+            <code>1-5, 8, 10-13</code> &nbsp; <code>3,4,8</code> &nbsp; <code>all</code>
+          </div>
+          <div class="range-input-wrap">
+            <input class="range-input" id="sale-range" placeholder="e.g.  1-5, 8, 12" oninput="onRangeInput()" autocomplete="off" spellcheck="false">
+            <button class="btn btn-sm" onclick="clearRange()">✕ Clear</button>
+          </div>
+          <div id="range-preview" class="range-preview"></div>
+          <div id="range-summary" class="range-summary"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-purple" onclick="recordSale()" style="margin-top:.25rem">Record sale →</button>
+      <div id="sale-error" style="font-size:12px;color:var(--rust);margin-top:8px;font-weight:500"></div>
+    </div>
+
+    <div class="card"><div class="card-title">📜 Sales history</div><div id="sale-log"></div></div>
+  </div>
+</div>
+
+<!-- ══ FEED ══ -->
+<div id="feed" class="section">
+  <div class="sec-hdr"><div><h2>Feed management</h2><p>Track daily usage &amp; cost across custom feed types</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="card al-blue">
+        <div class="card-title">🌾 Define a feed type</div>
+        <div class="fg2">
+          <div class="fg"><label class="flbl">Feed name</label><input class="finp" id="feed-name" placeholder="e.g. Layer pellets"></div>
+          <div class="fg"><label class="flbl">Cost per kg (₹)</label><input class="finp" type="number" id="feed-cpk" min="0" value="45" step="0.5"></div>
+        </div>
+        <button class="btn btn-blue" onclick="addFeedType()">Add feed type</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📦 Feed types</div>
+        <div id="feed-type-list"><div class="empty"><div class="empty-ico">🌾</div>No feed types defined yet.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card al-blue">
+        <div class="card-title">✏️ Log daily usage</div>
+        <div class="fg2">
+          <div class="fg"><label class="flbl">Date</label><input class="finp" type="date" id="feed-date"></div>
+          <div class="fg"><label class="flbl">Feed type</label><select class="fsel" id="feed-type-sel"></select></div>
+        </div>
+        <div class="fg2">
+          <div class="fg"><label class="flbl">Amount used (kg)</label><input class="finp" type="number" id="feed-kg" min="0.1" value="1" step="0.1"></div>
+          <div class="fg"><label class="flbl">Notes (optional)</label><input class="finp" id="feed-notes" placeholder="e.g. chicks only"></div>
+        </div>
+        <button class="btn btn-blue" onclick="logFeed()">Log usage →</button>
+      </div>
+      <div class="card"><div class="card-title">📋 Usage log</div><div id="feed-log-list"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOSSES ══ -->
+<div id="losses" class="section">
+  <div class="sec-hdr"><div><h2>Loss log</h2><p>Every loss logged reveals patterns that help protect your flock</p></div></div>
+  <div class="two-col">
+    <div class="card al-rust">
+      <div class="card-title">📝 Record a loss</div>
+      <div class="fg2">
+        <div class="fg"><label class="flbl">Date</label><input class="finp" type="date" id="loss-date"></div>
+        <div class="fg"><label class="flbl">Bird type</label><select class="fsel" id="loss-type"><option value="chick">Chick</option><option value="hen">Hen</option><option value="rooster">Rooster</option></select></div>
+      </div>
+      <div class="fg2">
+        <div class="fg"><label class="flbl">Count</label><input class="finp" type="number" id="loss-count" min="1" value="1"></div>
+        <div class="fg"><label class="flbl">Cause</label><select class="fsel" id="loss-cause"><option value="hawk">Hawk</option><option value="mongoose">Mongoose</option><option value="dog">Dog</option><option value="cat">Cat</option><option value="disease">Disease</option><option value="eaten">Eaten (family)</option><option value="unknown">Unknown</option></select></div>
+      </div>
+      <button class="btn btn-rust" onclick="logLoss()">Record loss</button>
+    </div>
+    <div class="card"><div class="card-title">⚠️ Loss by cause</div><div id="loss-summary"></div></div>
+  </div>
+</div>
+
+<!-- ══ PROTECTION ══ -->
+<div id="protection" class="section">
+  <div class="sec-hdr"><div><h2>Predator protection</h2><p>Practical measures for your homestead</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="prot-card"><div class="prot-head" style="background:var(--warm)"><span style="font-size:22px">🦅</span><h3>Hawk protection</h3></div><div class="prot-body"><ul><li>String fishing line or wire in a grid overhead — hawks won't dive through tight spaces</li><li>Plant dense cover bushes so birds can shelter instantly</li><li>Your rooster is your early-warning system — alarm-calls at aerial threats</li><li>Restrict free-range to mid-morning; avoid early dawn &amp; dusk (peak hawk hours)</li></ul></div></div>
+      <div class="prot-card"><div class="prot-head" style="background:var(--rust-light)"><span style="font-size:22px">🦦</span><h3>Mongoose protection</h3></div><div class="prot-body"><ul><li>Hardware cloth buried 30 cm underground around coop perimeter</li><li>Lock the coop door every single night — mongooses hunt at dusk and before dawn</li><li>Automatic timer coop door is worthwhile (₹1,500–3,000)</li><li>Remove leftover feed from the yard each evening</li></ul></div></div>
+    </div>
+    <div>
+      <div class="prot-card"><div class="prot-head" style="background:var(--green-pale)"><span style="font-size:22px">🐕</span><h3>Dog &amp; cat control</h3></div><div class="prot-body"><ul><li>Solid 4-foot fence with buried wire base keeps dogs out</li><li>Young chicks are cat targets — keep in covered brooder until 4+ weeks</li><li>Motion-sensor lights near the coop deter night-time approaches</li></ul></div></div>
+      <div class="card" style="background:var(--green-pale);border-color:rgba(74,103,65,.2)">
+        <div class="card-title" style="color:var(--green)">🎯 Business targets</div>
+        <div style="font-size:13px;color:#3a5432;line-height:2.1">
+          <div>3 hens × 13 eggs × 4 clutches = <strong>156 eggs/year potential</strong></div>
+          <div>Target loss rate: under 15% of chicks, 0% of breeder hens</div>
+          <div>Keep ≥ 50% of chick batches as future layers or breeders</div>
+          <div>Cull / eat surplus cockerels at 16–20 weeks</div>
+          <div>Retire a breeder hen after 2–3 productive seasons</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- PROMOTE MODAL -->
+<div id="promote-modal" class="modal-bg" style="display:none">
+  <div class="modal">
+    <button class="modal-close" onclick="closePromote()">✕</button>
+    <h3>Promote chick to breeder</h3>
+    <p class="modal-desc">This chick keeps its common ID and also gets a unique breeder ID &amp; name.</p>
+    <div class="fg">
+      <label class="flbl">Select chick (roll number)</label>
+      <select class="fsel" id="pm-roll-sel" onchange="onPromoteRollChange()"></select>
+    </div>
+    <div class="fg"><label class="flbl">Common ID (auto)</label><input class="finp" id="pm-chick-id" readonly style="background:var(--cream);font-family:monospace;font-size:12px"></div>
+    <div class="fg2">
+      <div class="fg"><label class="flbl">New breeder ID</label><input class="finp" id="pm-breeder-id" placeholder="e.g. R4, H5"></div>
+      <div class="fg"><label class="flbl">Name</label><input class="finp" id="pm-name" placeholder="e.g. Sundaram"></div>
+    </div>
+    <div class="fg"><label class="flbl">Role</label><select class="fsel" id="pm-role"><option value="rooster">Rooster</option><option value="hen">Hen</option></select></div>
+    <button class="btn btn-gold" onclick="confirmPromote()" style="margin-top:.5rem">Promote →</button>
+    <div id="promote-error" style="font-size:12px;color:var(--rust);margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ADD ROOSTER MODAL -->
+<div id="rooster-modal" class="modal-bg" style="display:none">
+  <div class="modal">
+    <button class="modal-close" onclick="closeRoosterModal()">✕</button>
+    <h3>Add a rooster</h3>
+    <div class="fg2">
+      <div class="fg"><label class="flbl">Name</label><input class="finp" id="rm-name" placeholder="e.g. Raja"></div>
+      <div class="fg"><label class="flbl">Breeder ID</label><input class="finp" id="rm-bid" placeholder="e.g. R2"></div>
+    </div>
+    <div class="fg"><label class="flbl">Breed (optional)</label><input class="finp" id="rm-breed" placeholder="e.g. Aseel"></div>
+    <button class="btn btn-earth" onclick="addRooster()" style="margin-top:.5rem">Add rooster</button>
+    <div id="rooster-error" style="font-size:12px;color:var(--rust);margin-top:8px"></div>
+  </div>
+</div>
+
+<script>
+const todayStr = new Date().toISOString().split('T')[0];
+document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+['egg-date','loss-date','chick-date','sale-date','feed-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=todayStr});
+
+/* ════ STATE ════ */
+let state = {
+  roosters:[{id:1,bid:'R1',name:'Raja',breed:'',totalBatches:0,photo:null}],
+  hens:[
+    {id:1,bid:'H1',name:'Hen A',breed:'',totalEggs:0,clutches:0,photo:null},
+    {id:2,bid:'H2',name:'Hen B',breed:'',totalEggs:0,clutches:0,photo:null},
+    {id:3,bid:'H3',name:'Hen C',breed:'',totalEggs:0,clutches:0,photo:null}
+  ],
+  eggLog:[],
+  lossLog:[],
+  batches:[],
+  salesLog:[],
+  feedTypes:[],
+  feedLog:[],
+  promotedBreeders:[],
+  nextRoosterId:2,nextHenId:4,nextBatchSeq:1,nextFeedId:1,nextSaleId:1
+};
+let promoteCtx=null;
+const FEED_COLORS=['#4A6741','#C9922A','#3A6B8B','#B8521A','#6B5B8B','#7A9B6F','#8B6F47'];
+
+/* ════ HELPERS ════ */
+function makeBatchId(seq){return 'B'+String(seq).padStart(3,'0');}
+function makeChickId(rBid,hBid,batchId,roll){return `${rBid}-${hBid}-${batchId}-${roll}`;}
+
+function parseRange(str,max){
+  if(!str.trim())return[];
+  if(str.trim().toLowerCase()==='all')return Array.from({length:max},(_,i)=>i+1);
+  const parts=str.split(',');
+  const nums=new Set();
+  for(const p of parts){
+    const t=p.trim();if(!t)continue;
+    const rm=t.match(/^(\d+)\s*[-–]\s*(\d+)$/);
+    if(rm){
+      const a=parseInt(rm[1]),b=parseInt(rm[2]);
+      if(a>b)return`Range ${a}-${b} is invalid (start > end)`;
+      for(let i=a;i<=b;i++)nums.add(i);
+    } else if(/^\d+$/.test(t)){nums.add(parseInt(t));}
+    else return`Cannot parse "${t}"`;
+  }
+  return[...nums].sort((a,b)=>a-b);
+}
+
+function rollsToLabel(rolls){
+  if(!rolls.length)return'';
+  const s=[...rolls].sort((a,b)=>a-b);
+  const r=[];let st=s[0],en=s[0];
+  for(let i=1;i<s.length;i++){if(s[i]===en+1){en=s[i];}else{r.push(st===en?`${st}`:`${st}-${en}`);st=en=s[i];}}
+  r.push(st===en?`${st}`:`${st}-${en}`);
+  return r.join(', ');
+}
+
+/* ════ PHOTO ════ */
+function setHdrPhoto(inp){
+  if(!inp.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=document.getElementById('hdr-img');img.src=e.target.result;img.style.display='block';
+    document.getElementById('hdr-bg').style.display='none';
+  };r.readAsDataURL(inp.files[0]);
+}
+function triggerPhoto(type,id){const el=document.getElementById(`photo-${type}-${id}`);if(el)el.click();}
+function setBirdPhoto(type,id,inp){
+  if(!inp.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const arr=type==='rooster'?state.roosters:state.hens;
+    const b=arr.find(x=>x.id===id);
+    if(b){b.photo=e.target.result;type==='rooster'?renderRoosters():renderHens();}
+  };r.readAsDataURL(inp.files[0]);
+}
+
+/* ════ TAB ════ */
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>{if(b.getAttribute('onclick').includes("'"+t+"'"))b.classList.add('active');});
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(t).classList.add('active');
+  render();
+}
+
+/* ════ RENDER ════ */
+function render(){
+  renderMetrics();renderActivity();renderFlockHealth();renderFinancials();
+  renderRoosters();renderHens();renderEggLog();
+  renderBatches();renderSaleLog();
+  renderFeedTypes();renderFeedLog();
+  renderLossSummary();
+  populateSelects();
+}
+
+function renderMetrics(){
+  const totalEggs=state.eggLog.reduce((s,e)=>s+e.count,0);
+  const totalChicks=state.batches.reduce((s,b)=>s+b.count,0);
+  const soldCount=state.salesLog.reduce((s,sl)=>s+sl.rolls.length,0);
+  const activeChicks=totalChicks-soldCount-state.batches.reduce((s,b)=>s+b.chicks.filter(c=>c.status==='promoted').length,0);
+  const totalSales=state.salesLog.reduce((s,sl)=>s+sl.total,0);
+  const totalFeedCost=state.feedLog.reduce((s,fl)=>s+fl.cost,0);
+  const totalLosses=state.lossLog.reduce((s,l)=>s+l.count,0);
+  document.getElementById('metrics').innerHTML=`
+    <div class="mc c-egg"><div class="mc-icon">🥚</div><div class="mc-val">${totalEggs}</div><div class="mc-lbl">Eggs logged</div><div class="mc-sub">~${state.hens.length*52}/yr potential</div></div>
+    <div class="mc c-hen"><div class="mc-icon">🐓</div><div class="mc-val">${state.roosters.length+state.hens.length}</div><div class="mc-lbl">Breeders</div><div class="mc-sub">${state.roosters.length} rooster · ${state.hens.length} hen</div></div>
+    <div class="mc c-chk"><div class="mc-icon">🐣</div><div class="mc-val">${activeChicks}</div><div class="mc-lbl">Active chicks</div><div class="mc-sub">${state.batches.length} batch(es)</div></div>
+    <div class="mc c-sal"><div class="mc-icon">💰</div><div class="mc-val">₹${totalSales}</div><div class="mc-lbl">Total sales</div><div class="mc-sub">${state.salesLog.length} transaction(s)</div></div>
+    <div class="mc c-fdd"><div class="mc-icon">🌾</div><div class="mc-val">₹${Math.round(totalFeedCost)}</div><div class="mc-lbl">Feed cost</div><div class="mc-sub">${state.feedLog.length} log entries</div></div>
+    <div class="mc c-los"><div class="mc-icon">📉</div><div class="mc-val">${totalLosses}</div><div class="mc-lbl">Total losses</div><div class="mc-sub">birds lost</div></div>
+  `;
+}
+
+function renderActivity(){
+  const all=[
+    ...state.eggLog.map(e=>({date:e.date,text:`${e.count} egg(s) from ${e.hen} — ${e.purpose}`,type:'green'})),
+    ...state.lossLog.map(l=>({date:l.date,text:`${l.count} ${l.birdType}(s) lost to ${l.cause}`,type:'rust'})),
+    ...state.batches.map(b=>({date:b.date,text:`Batch ${b.batchId}: ${b.count} chicks hatched`,type:'gold'})),
+    ...state.salesLog.map(s=>({date:s.date,text:`Sold ${s.rolls.length} chick(s)${s.buyer?' to '+s.buyer:''} — ₹${s.total}`,type:'purple'})),
+    ...state.feedLog.map(f=>{const ft=state.feedTypes.find(x=>x.id===f.feedId);return{date:f.date,text:`${ft?ft.name:'Feed'}: ${f.kg}kg used — ₹${f.cost.toFixed(2)}`,type:'blue'};})
+  ].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
+  const el=document.getElementById('activity-log');
+  if(!all.length){el.innerHTML='<div class="empty"><div class="empty-ico">📋</div>No activity yet. Start logging!</div>';return;}
+  const typeLabel={green:'eggs',rust:'loss',gold:'chicks',purple:'sale',blue:'feed'};
+  el.innerHTML=all.map(a=>`<div class="log-row"><span class="log-main">${a.text}</span><span class="badge b-${a.type}">${typeLabel[a.type]}</span><span class="log-sub">${a.date}</span></div>`).join('');
+}
+
+function renderFlockHealth(){
+  const el=document.getElementById('flock-health');if(!el)return;
+  const te=state.eggLog.reduce((s,e)=>s+e.count,0);
+  const pot=state.hens.length*52;
+  const pct=pot?Math.min(100,Math.round(te/pot*100)):0;
+  const losses=state.lossLog.reduce((s,l)=>s+l.count,0);
+  el.innerHTML=`
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-mid);margin-bottom:4px"><span>Egg production rate</span><span style="font-weight:500">${pct}%</span></div>
+    <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <div class="prog-pct">${te} logged · ~${pot}/year target</div>
+    <div class="divider"></div>
+    <div style="font-size:13px;color:var(--text-mid)">Losses: <strong style="color:var(--rust)">${losses} birds</strong> · target under 15% of annual chick output</div>`;
+}
+
+function renderFinancials(){
+  const el=document.getElementById('financials');if(!el)return;
+  const sales=state.salesLog.reduce((s,sl)=>s+sl.total,0);
+  const feed=state.feedLog.reduce((s,fl)=>s+fl.cost,0);
+  const net=sales-feed;
+  el.innerHTML=`<div class="fin-grid">
+    <div class="fin-cell" style="background:var(--green-pale)"><div class="fin-val" style="color:var(--green)">₹${sales}</div><div class="fin-lbl">Sales revenue</div></div>
+    <div class="fin-cell" style="background:var(--blue-light)"><div class="fin-val" style="color:var(--blue)">₹${Math.round(feed)}</div><div class="fin-lbl">Feed cost</div></div>
+    <div class="fin-cell" style="background:${net>=0?'var(--green-pale)':'var(--rust-light)'}"><div class="fin-val" style="color:${net>=0?'var(--green)':'var(--rust)'}">₹${Math.round(Math.abs(net))} ${net>=0?'▲':'▼'}</div><div class="fin-lbl">Net profit</div></div>
+  </div><div style="font-size:11px;color:var(--text-soft);margin-top:10px;text-align:center">Sales minus feed cost · does not include overhead</div>`;
+}
+
+function renderRoosters(){
+  const el=document.getElementById('rooster-list');if(!el)return;
+  const fi=document.getElementById('rooster-file-inputs');
+  fi.innerHTML=state.roosters.map(r=>`<input type="file" id="photo-rooster-${r.id}" class="hidden-file" accept="image/*" onchange="setBirdPhoto('rooster',${r.id},this)">`).join('');
+  el.innerHTML=state.roosters.map(r=>{
+    const ph=r.photo?`<img src="${r.photo}" alt="${r.name}">`:`<div class="bp-ph"><div class="ph-ico">🐓</div><div>Tap to add photo</div></div>`;
+    return `<div class="breeder-card">
+      <div class="bp-wrap" onclick="triggerPhoto('rooster',${r.id})">${ph}<div class="bp-overlay">${r.photo?'Change photo':'Add photo'}</div></div>
+      <div class="bp-info">
+        <div class="bp-name">${r.name}</div>
+        <div class="bp-id">${r.bid}</div>
+        <div class="bp-stats">${r.breed||'Breed unknown'} · ${r.totalBatches} batch(es) sired</div>
+        ${r.commonId?`<div style="font-size:10px;color:var(--text-soft);font-family:monospace;margin-top:2px">From: ${r.commonId}</div>`:''}
+        <span class="bp-status" style="background:var(--gold-light);color:#7a5a10">Active rooster</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderHens(){
+  const el=document.getElementById('hen-list');if(!el)return;
+  const fi=document.getElementById('hen-file-inputs');
+  fi.innerHTML=state.hens.map(h=>`<input type="file" id="photo-hen-${h.id}" class="hidden-file" accept="image/*" onchange="setBirdPhoto('hen',${h.id},this)">`).join('');
+  el.innerHTML=state.hens.map(h=>{
+    const pct=Math.min(100,Math.round(h.totalEggs/52*100));
+    const ph=h.photo?`<img src="${h.photo}" alt="${h.name}">`:`<div class="bp-ph"><div class="ph-ico">🐔</div><div>Tap to add photo</div></div>`;
+    return `<div class="breeder-card">
+      <div class="bp-wrap" onclick="triggerPhoto('hen',${h.id})">${ph}<div class="bp-overlay">${h.photo?'Change photo':'Add photo'}</div></div>
+      <div class="bp-info">
+        <div class="bp-name">${h.name}</div>
+        <div class="bp-id">${h.bid}</div>
+        <div class="bp-stats">${h.breed||'Breed unknown'} · ${h.totalEggs} eggs · ${h.clutches} clutch(es)</div>
+        ${h.commonId?`<div style="font-size:10px;color:var(--text-soft);font-family:monospace;margin-top:2px">From: ${h.commonId}</div>`:''}
+        <div class="bp-bar"><div class="bp-bar-fill" style="width:${pct}%"></div></div>
+        <span class="bp-status" style="background:var(--green-pale);color:var(--green)">Active breeder</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderEggLog(){
+  const el=document.getElementById('egg-log-list');if(!el)return;
+  if(!state.eggLog.length){el.innerHTML='<div class="empty"><div class="empty-ico">🥚</div>No eggs logged yet.</div>';return;}
+  el.innerHTML=[...state.eggLog].reverse().map(e=>`
+    <div class="log-row">
+      <span class="log-main">${e.hen}</span>
+      <span>${e.count} egg${e.count>1?'s':''}</span>
+      <span class="badge b-${e.purpose==='hatching'?'earth':e.purpose==='eating'?'green':'gold'}">${e.purpose}</span>
+      <span class="log-sub">${e.date}</span>
+    </div>`).join('');
+}
+
+function renderBatches(){
+  const el=document.getElementById('chick-batches');if(!el)return;
+  if(!state.batches.length){el.innerHTML='<div class="card"><div class="empty"><div class="empty-ico">🐣</div>No batches yet.</div></div>';return;}
+  const stageMap={brooder:'earth','young chick':'gold','pullet/cockerel':'rust','near laying':'green',adult:'green'};
+  el.innerHTML=[...state.batches].reverse().map(b=>{
+    const weeks=Math.floor((Date.now()-new Date(b.date))/(7*24*3600e3));
+    let stage='brooder';
+    if(weeks>=4&&weeks<8)stage='young chick';
+    else if(weeks>=8&&weeks<16)stage='pullet/cockerel';
+    else if(weeks>=16&&weeks<20)stage='near laying';
+    else if(weeks>=20)stage='adult';
+    const active=b.chicks.filter(c=>c.status==='active').length;
+    const sold=b.chicks.filter(c=>c.status==='sold').length;
+    const prom=b.chicks.filter(c=>c.status==='promoted').length;
+    const chips=b.chicks.map(c=>{
+      let cls='';
+      if(c.status==='sold')cls='sold';
+      else if(c.status==='promoted')cls='promoted';
+      return `<span class="chick-chip ${cls}" title="${c.id}${c.status==='promoted'?' → '+c.promotedBreederId:''}">#${c.roll}</span>`;
+    }).join('');
+    return `<div class="batch-card">
+      <div class="batch-head">
+        <div>
+          <div class="batch-title">${b.count} chicks · ${b.rName} × ${b.hName}</div>
+          <div class="batch-id-tag">${b.batchId}</div>
+          <div class="batch-meta">${b.date} · ${weeks} wk${weeks!==1?'s':''} old</div>
+          <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px">Active: <strong>${active}</strong> · Sold: ${sold} · Promoted: ${prom}</div>
+        </div>
+        <span class="badge b-${stageMap[stage]||'earth'}">${stage}</span>
+      </div>
+      <div class="chick-chips">${chips}</div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-xs btn-purple" onclick="goSellBatch('${b.batchId}')">Sell chicks →</button>
+        <button class="btn btn-xs btn-gold" onclick="openPromote('${b.batchId}')">Promote to breeder</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSaleLog(){
+  const el=document.getElementById('sale-log');if(!el)return;
+  if(!state.salesLog.length){el.innerHTML='<div class="empty"><div class="empty-ico">💰</div>No sales yet.</div>';return;}
+  el.innerHTML=[...state.salesLog].reverse().map(s=>`
+    <div class="log-row">
+      <div class="log-main">
+        <div style="font-weight:500">${s.buyer||'Anonymous buyer'} · ${s.rolls.length} chick${s.rolls.length>1?'s':''}</div>
+        <div style="font-family:monospace;font-size:10.5px;color:var(--text-soft);margin-top:2px">Batch: ${s.batchId} · Rolls: ${rollsToLabel(s.rolls)}</div>
+      </div>
+      <span class="badge b-purple">₹${s.total}</span>
+      <span class="log-sub">${s.date}</span>
+    </div>`).join('');
+}
+
+function renderFeedTypes(){
+  const el=document.getElementById('feed-type-list');if(!el)return;
+  if(!state.feedTypes.length){el.innerHTML='<div class="empty"><div class="empty-ico">🌾</div>No feed types defined yet.</div>';return;}
+  el.innerHTML=state.feedTypes.map(f=>`
+    <div class="feed-type-card">
+      <div class="feed-dot" style="background:${FEED_COLORS[f.colorIdx%FEED_COLORS.length]}"></div>
+      <div class="feed-info"><div class="feed-name-txt">${f.name}</div><div class="feed-cost-txt">₹${f.cpk}/kg</div></div>
+      <button class="btn btn-xs btn-rust" onclick="deleteFeedType(${f.id})">Remove</button>
+    </div>`).join('');
+}
+
+function renderFeedLog(){
+  const el=document.getElementById('feed-log-list');if(!el)return;
+  if(!state.feedLog.length){el.innerHTML='<div class="empty"><div class="empty-ico">📋</div>No usage logged yet.</div>';return;}
+  el.innerHTML=[...state.feedLog].reverse().map(f=>{
+    const ft=state.feedTypes.find(x=>x.id===f.feedId);
+    const col=ft?FEED_COLORS[ft.colorIdx%FEED_COLORS.length]:'#888';
+    return `<div class="feed-log-row">
+      <span style="width:10px;height:10px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>
+      <span class="log-main">${ft?ft.name:'?'} · ${f.kg}kg${f.notes?' · '+f.notes:''}</span>
+      <span class="badge b-blue">₹${f.cost.toFixed(2)}</span>
+      <span class="log-sub">${f.date}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderLossSummary(){
+  const el=document.getElementById('loss-summary');if(!el)return;
+  if(!state.lossLog.length){el.innerHTML='<div class="empty"><div class="empty-ico">✅</div>No losses recorded.</div>';return;}
+  const causes={};state.lossLog.forEach(l=>{causes[l.cause]=(causes[l.cause]||0)+l.count;});
+  const max=Math.max(...Object.values(causes));
+  el.innerHTML=Object.entries(causes).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`
+    <div class="cause-row">
+      <span class="cause-lbl">${c}</span>
+      <div class="cause-bar-wrap"><div class="cause-bar" style="width:${Math.round(n/max*100)}%"></div></div>
+      <span class="cause-n">${n}</span>
+    </div>`).join('');
+}
+
+function populateSelects(){
+  const eh=document.getElementById('egg-hen');
+  if(eh)eh.innerHTML=state.hens.map(h=>`<option value="${h.name}">${h.name} (${h.bid})</option>`).join('');
+  const cr=document.getElementById('chick-rooster');
+  if(cr)cr.innerHTML=state.roosters.map(r=>`<option value="${r.id}">${r.name} (${r.bid})</option>`).join('');
+  const ch=document.getElementById('chick-hen');
+  if(ch)ch.innerHTML=state.hens.map(h=>`<option value="${h.id}">${h.name} (${h.bid})</option>`).join('');
+  const sb=document.getElementById('sale-batch');
+  if(sb){
+    const active=state.batches.filter(b=>b.chicks.some(c=>c.status==='active'));
+    sb.innerHTML=active.length?active.map(b=>`<option value="${b.batchId}">${b.batchId} — ${b.rName}×${b.hName} (${b.chicks.filter(c=>c.status==='active').length} active)</option>`).join(''):'<option value="">No active batches</option>';
+  }
+  const fts=document.getElementById('feed-type-sel');
+  if(fts)fts.innerHTML=state.feedTypes.length?state.feedTypes.map(f=>`<option value="${f.id}">${f.name} (₹${f.cpk}/kg)</option>`).join(''):'<option value="">No feed types defined</option>';
+}
+
+/* ════ ACTIONS ════ */
+function showAddRooster(){document.getElementById('rooster-modal').style.display='flex';}
+function closeRoosterModal(){document.getElementById('rooster-modal').style.display='none';document.getElementById('rooster-error').textContent='';}
+
+function addRooster(){
+  const name=document.getElementById('rm-name').value.trim();
+  const bid=document.getElementById('rm-bid').value.trim();
+  const breed=document.getElementById('rm-breed').value.trim();
+  const errEl=document.getElementById('rooster-error');errEl.textContent='';
+  if(!name||!bid){errEl.textContent='Name and Breeder ID are required.';return;}
+  state.roosters.push({id:state.nextRoosterId++,bid,name,breed,totalBatches:0,photo:null});
+  document.getElementById('rm-name').value='';document.getElementById('rm-bid').value='';document.getElementById('rm-breed').value='';
+  closeRoosterModal();render();
+}
+
+function addHen(){
+  const name=document.getElementById('new-hen-name').value.trim();
+  const bid=document.getElementById('new-hen-bid').value.trim();
+  const breed=document.getElementById('new-hen-breed').value.trim();
+  if(!name||!bid)return alert('Name and Breeder ID required.');
+  state.hens.push({id:state.nextHenId++,bid,name,breed,totalEggs:0,clutches:0,photo:null});
+  document.getElementById('new-hen-name').value='';document.getElementById('new-hen-bid').value='';document.getElementById('new-hen-breed').value='';
+  render();
+}
+
+function logEgg(){
+  const date=document.getElementById('egg-date').value;
+  const henName=document.getElementById('egg-hen').value;
+  const count=parseInt(document.getElementById('egg-count').value)||0;
+  const purpose=document.getElementById('egg-purpose').value;
+  if(!date||!henName||count<1)return;
+  state.eggLog.push({date,hen:henName,count,purpose});
+  const h=state.hens.find(x=>x.name===henName);
+  if(h){h.totalEggs+=count;if(count>=12)h.clutches++;}
+  document.getElementById('egg-count').value=1;render();
+}
+
+function addBatch(){
+  const date=document.getElementById('chick-date').value;
+  const rId=parseInt(document.getElementById('chick-rooster').value);
+  const hId=parseInt(document.getElementById('chick-hen').value);
+  const count=parseInt(document.getElementById('chick-count').value)||0;
+  if(!date||!rId||!hId||count<1)return;
+  const rooster=state.roosters.find(x=>x.id===rId);
+  const hen=state.hens.find(x=>x.id===hId);
+  if(!rooster||!hen)return;
+  const batchId=makeBatchId(state.nextBatchSeq++);
+  const chicks=Array.from({length:count},(_,i)=>{const roll=i+1;return{roll,id:makeChickId(rooster.bid,hen.bid,batchId,roll),status:'active'};});
+  state.batches.push({batchId,roosterId:rId,henId:hId,rName:rooster.name,hName:hen.name,rBid:rooster.bid,hBid:hen.bid,date,count,chicks});
+  rooster.totalBatches++;
+  document.getElementById('chick-count').value=8;render();
+}
+
+function logLoss(){
+  const date=document.getElementById('loss-date').value;
+  const birdType=document.getElementById('loss-type').value;
+  const count=parseInt(document.getElementById('loss-count').value)||1;
+  const cause=document.getElementById('loss-cause').value;
+  if(!date)return;
+  state.lossLog.push({date,birdType,count,cause});
+  document.getElementById('loss-count').value=1;render();
+}
+
+/* ── FEED ── */
+function addFeedType(){
+  const name=document.getElementById('feed-name').value.trim();
+  const cpk=parseFloat(document.getElementById('feed-cpk').value)||0;
+  if(!name)return;
+  const colorIdx=state.feedTypes.length%FEED_COLORS.length;
+  state.feedTypes.push({id:state.nextFeedId++,name,cpk,colorIdx});
+  document.getElementById('feed-name').value='';document.getElementById('feed-cpk').value=45;render();
+}
+function deleteFeedType(id){state.feedTypes=state.feedTypes.filter(x=>x.id!==id);render();}
+function logFeed(){
+  const date=document.getElementById('feed-date').value;
+  const feedId=parseInt(document.getElementById('feed-type-sel').value);
+  const kg=parseFloat(document.getElementById('feed-kg').value)||0;
+  const notes=document.getElementById('feed-notes').value.trim();
+  if(!date||!feedId||kg<=0)return;
+  const ft=state.feedTypes.find(x=>x.id===feedId);if(!ft)return;
+  const cost=kg*ft.cpk;
+  state.feedLog.push({date,feedId,kg,cost,notes});
+  document.getElementById('feed-kg').value=1;document.getElementById('feed-notes').value='';render();
+}
+
+/* ── RANGE PICKER ── */
+function onSaleBatchChange(){
+  document.getElementById('sale-range').value='';
+  document.getElementById('range-preview').innerHTML='';
+  document.getElementById('range-summary').textContent='';
+}
+function onRangeInput(){
+  const batchId=document.getElementById('sale-batch').value;
+  const str=document.getElementById('sale-range').value;
+  const prev=document.getElementById('range-preview');
+  const sumEl=document.getElementById('range-summary');
+  if(!batchId){prev.innerHTML='';sumEl.textContent='';return;}
+  const batch=state.batches.find(b=>b.batchId===batchId);
+  if(!batch){prev.innerHTML='';sumEl.textContent='';return;}
+  if(!str.trim()){prev.innerHTML='';sumEl.textContent='';return;}
+  const result=parseRange(str,batch.count);
+  if(typeof result==='string'){
+    prev.innerHTML=`<span class="rp-chip err">Error: ${result}</span>`;sumEl.textContent='';return;
+  }
+  const chips=result.map(roll=>{
+    const c=batch.chicks.find(x=>x.roll===roll);
+    if(!c)return`<span class="rp-chip err">#${roll} ✗</span>`;
+    if(c.status==='sold')return`<span class="rp-chip dup">#${roll} sold</span>`;
+    if(c.status==='promoted')return`<span class="rp-chip dup">#${roll} breeder</span>`;
+    return`<span class="rp-chip ok">#${roll}</span>`;
+  });
+  prev.innerHTML=chips.join('');
+  const valid=result.filter(roll=>{const c=batch.chicks.find(x=>x.roll===roll);return c&&c.status==='active';});
+  const price=parseFloat(document.getElementById('sale-price').value)||0;
+  sumEl.textContent=valid.length?`${valid.length} chick(s) available · ₹${valid.length*price} estimated`:'No available chicks in selection';
+}
+function clearRange(){
+  document.getElementById('sale-range').value='';
+  document.getElementById('range-preview').innerHTML='';
+  document.getElementById('range-summary').textContent='';
+}
+
+function recordSale(){
+  const errEl=document.getElementById('sale-error');errEl.textContent='';
+  const date=document.getElementById('sale-date').value;
+  const batchId=document.getElementById('sale-batch').value;
+  const buyer=document.getElementById('sale-buyer').value.trim();
+  const price=parseFloat(document.getElementById('sale-price').value)||0;
+  const rangeStr=document.getElementById('sale-range').value;
+  if(!batchId){errEl.textContent='Please select a batch.';return;}
+  const batch=state.batches.find(b=>b.batchId===batchId);
+  if(!batch){errEl.textContent='Batch not found.';return;}
+  const result=parseRange(rangeStr,batch.count);
+  if(typeof result==='string'){errEl.textContent='Range error: '+result;return;}
+  if(!result.length){errEl.textContent='Please enter roll numbers to sell.';return;}
+  const validRolls=result.filter(roll=>{const c=batch.chicks.find(x=>x.roll===roll);return c&&c.status==='active';});
+  if(!validRolls.length){errEl.textContent='No active chicks in the selected range.';return;}
+  validRolls.forEach(roll=>{const c=batch.chicks.find(x=>x.roll===roll);if(c)c.status='sold';});
+  const total=validRolls.length*price;
+  const ids=validRolls.map(roll=>batch.chicks.find(c=>c.roll===roll).id);
+  state.salesLog.push({id:state.nextSaleId++,date,batchId,rolls:validRolls,buyer,priceEach:price,total,ids});
+  clearRange();
+  document.getElementById('sale-buyer').value='';document.getElementById('sale-price').value=80;
+  render();
+}
+
+/* ── PROMOTE ── */
+function openPromote(batchId){
+  const batch=state.batches.find(b=>b.batchId===batchId);
+  if(!batch)return;
+  const active=batch.chicks.filter(c=>c.status==='active');
+  if(!active.length){alert('No active chicks in this batch to promote.');return;}
+  promoteCtx={batchId};
+  const sel=document.getElementById('pm-roll-sel');
+  sel.innerHTML=active.map(c=>`<option value="${c.roll}">#${c.roll} — ${c.id}</option>`).join('');
+  const first=active[0];
+  document.getElementById('pm-chick-id').value=first.id;
+  document.getElementById('pm-breeder-id').value='';
+  document.getElementById('pm-name').value='';
+  document.getElementById('promote-error').textContent='';
+  document.getElementById('promote-modal').style.display='flex';
+}
+function onPromoteRollChange(){
+  const roll=parseInt(document.getElementById('pm-roll-sel').value);
+  const batch=state.batches.find(b=>b.batchId===promoteCtx.batchId);
+  const c=batch&&batch.chicks.find(x=>x.roll===roll);
+  if(c)document.getElementById('pm-chick-id').value=c.id;
+}
+function closePromote(){document.getElementById('promote-modal').style.display='none';}
+function confirmPromote(){
+  const errEl=document.getElementById('promote-error');errEl.textContent='';
+  const roll=parseInt(document.getElementById('pm-roll-sel').value);
+  const breederId=document.getElementById('pm-breeder-id').value.trim();
+  const name=document.getElementById('pm-name').value.trim();
+  const role=document.getElementById('pm-role').value;
+  if(!breederId||!name){errEl.textContent='Breeder ID and name are required.';return;}
+  if(!promoteCtx)return;
+  const batch=state.batches.find(b=>b.batchId===promoteCtx.batchId);
+  const chick=batch&&batch.chicks.find(c=>c.roll===roll);
+  if(!chick){errEl.textContent='Chick not found.';return;}
+  chick.status='promoted';chick.promotedBreederId=breederId;
+  const commonId=chick.id;
+  if(role==='rooster'){state.roosters.push({id:state.nextRoosterId++,bid:breederId,name,breed:'',totalBatches:0,photo:null,commonId});}
+  else{state.hens.push({id:state.nextHenId++,bid:breederId,name,breed:'',totalEggs:0,clutches:0,photo:null,commonId});}
+  state.promotedBreeders.push({commonId,breederId,name,role,batchId:promoteCtx.batchId,roll});
+  closePromote();render();
+}
+function goSellBatch(batchId){
+  switchTab('sales');
+  setTimeout(()=>{
+    const sb=document.getElementById('sale-batch');
+    if(sb){sb.value=batchId;onSaleBatchChange();}
+  },100);
+}
+
+/* CLOSE MODALS ON BACKGROUND CLICK */
+document.getElementById('promote-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closePromote();});
+document.getElementById('rooster-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeRoosterModal();});
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poulty Farm Management System</title>
+    <style>
+        th,td{
+            border: 3px;
+            padding: 8px;
+            text-align: center;
+        }
+        td{
+            background-color: grey;
+        }
+        th{
+            background-color: chartreuse;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="Add_new_button" id="Add_new_button" onclick="Open_Add_new_form()">Add_new</button>
+    <!-- <div class="Add_new_status" id="Add_new_status"></div> -->
+    <div class="Add_new_form" id="Add_new_form" style="display: none;">
+        <form class="form" onsubmit="handleSubmit(event)">
+            <h1>Here enter the Details of the new bird in your farm</h1>
+            <label>Unique Id : </label>
+            <input type="text" id="id" placeholder="Enter the uniqueID"><br><br>
+            <label>Breed : </label>
+            <input type="text" id="breed" placeholder="Enter the breed"><br><br>
+            <label>Gender : </label>
+            <input type="text" id="gender" placeholder="Enter the gneder"><br><br>
+            <label>Purpose : </label>
+            <input type="text" id="purpose" placeholder="Enter the purpose"><br><br>
+            <label>ParentID_1</label>
+            <input type="text" id="parentid_1" placeholder="Enter ParentID_1"><br><br>
+            <label>ParentID_2</label>
+            <input type="text" id="parentid_2" placeholder="Enter ParentID_2"><br><br>
+            <label>DOB : </label>
+            <input type="date" id="dob" placeholder="Enter DOB"><br><br>
+            <label>Apporx age : </label>
+            <input type="number" id="age" placeholder="Enter age"><br><br>
+            <label>Catagory : </label>
+            <input type="text" id="catagory" placeholder="Enter Catagory"><br><br>
+            <button type="submit" id="submit">Submit</button>
+        </form>
+    </div>
+    <button type="button" onclick="View_Birds()">View</button>
+    <div class="View_Birds" id="View_Birds"></div>
+
+
+    <table id="OP_table">
+        <tr>
+            <th>ID</th>
+            <th>Breed</th>
+            <th>Gender</th>
+            <th>Purpose</th>
+            <th>Parents</th>
+            <th>DOB</th>
+            <th>Approx_age</th>
+            <th>Catagory</th>
+        </tr>
+    </table>
+    <script src="poultry_farm_manegement_system.js"></script>
+</body>
+</html>
