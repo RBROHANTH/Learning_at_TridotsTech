@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learning bootstrap by myself</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="p-0">
+            <nav class="p-0 navbar navbar-expand-lg navbar-dark bg-primary d-flex justify-content-sm-between justify-content-md-between justify-content-lg-between">
+                <div  class="navbar-brand ps-2"> 
+                    <img src="logo.png" width="60px" height="60px">
+                    <span class="fs-3">Start bootstrap</span>
+                </div>
+                <div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link" href="#">Home</a>
+                            <a class="nav-item nav-link" href="#">Features</a>
+                            <a class="nav-item nav-link" href="#">Pricing</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+            <div class="row p-0 my-2 mx-0">
+                <div class="border border-dark border-2 col-lg-3 col-md-4 col-sm-6">
+                    <h5 class="fs-sm-auto fs-lg-3 fs-md-1">
+                        RBR Electronics
+                    </h5>
+                    <div>
+                        <ul class="list-unstyled">
+                            <li class="border border-dark border-bottom-3 border-top-0 border-start-0 border-end-0">
+                                Passive Components
+                            </li>
+                            <li class="border border-dark border-bottom-3 border-top-0 border-start-0 border-end-0">
+                                Active Components
+                            </li>
+                            <li class="border border-dark border-bottom-3 border-top-0 border-start-0 border-end-0">
+                                Integrated Circuits
+                            </li>                                        
+                        </ul>
+                    </div>
+                </div>
+                <div class="container-fluid col-lg-9 col-md-8 col-sm-6 p-0 m-0 border border-2 border-dark border-start-0">
+                    <!-- corrosal -->
+                    <div id="corrosalid" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#corrosalid" data-bs-slide-to="0" class="active dark"   aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#corrosalid" data-bs-slide-to="1"  class="dark" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#corrosalid" data-bs-slide-to="2" class="dark" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOI7IgTIZWF_FmVa6jPTeJppwuGt-dkQJdr4KUi-amfA&s=10" height="300px" >
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFjaqF0Fo4q5v6ynNmjKe5JfEhpCo4gx4XSWYRnXFqgA&s=10" height="300px" >
+                            </div>
+                             <div class="carousel-item">
+                                <img class="d-block w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Oh0EMvYYHQNgWOITDnCOOEhLkeHaLO9vACqiIybwMg&s=10" height="300px" >
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#corrosalid" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#corrosalid" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="row g-3 p-0 m-0">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card h-100">
+                                <img class="card-img-top" height="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJV4hydZm2k3qYJRgXIIxZH9nVSsLmFnyJHGs4zzVNNA&s=10">
+                                <div class="card-body">
+                                    <h5 class="card-title">Resistor</h5>
+                                    <div class="card-text">A component that opposes the flow of electric current, used to limit current and divide voltages in a circuit. Its resistance is measured in Ohms (Ω).</div>
+                                </div>
+                                <div class="card-footer bg-secondary py-2"><p class="m-0">&#9733;&#9733;&#9733;&#9733;&#9734;</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card h-100">
+                            <img class="card-img-top" height="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzGEnl0jZwbj2uzik58SXjxSeUCd3lhkFq2gYl0CapHg&s=10">
+                            <div class="card-body">
+                                <h5 class="card-title">Capacitor</h5>
+                                <div class="card-text">A device that stores and releases electrical energy within an electric field. It is commonly used for smoothing out power supply fluctuations and in timing circuits</div>
+                            </div>
+                            <div class="card-footer bg-secondary py-2"><p class="m-0">&#9733;&#9733;&#9733;&#9733;&#9734;</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card h-100">
+                            <img class="card-img-top" height="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzzjq97d7PnQn7WiihPOjb9obwmKYcBTcWMYUd_wLp4A&s=10">
+                            <div class="card-body">
+                                <h5 class="card-title">Inductor</h5>
+                                <div class="card-text">A passive coil that stores energy in a magnetic field when electric current flows through it. It resists sudden changes in current and is widely used for filtering noise in power supplies</div>
+                            </div>
+                            <div class="card-footer bg-secondary py-2"><p class="m-0">&#9733;&#9733;&#9733;&#9733;&#9734;</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card h-100">
+                            <img class="card-img-top" height="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvzNJlvgpqWYX-5Pgxw4Rd-T_bERECawGmFvs4eM1lwg&s=10">
+                            <div class="card-body">
+                                <h5 class="card-title">Diode</h5>
+                                <div class="card-text">: A semiconductor device that acts as a one-way valve for electric current. It allows current to flow in only one direction, which makes it essential for converting Alternating Current (AC) to Direct Current (DC).</div>
+                            </div>
+                            <div class="card-footer bg-secondary py-2"><p class="m-0">&#9733;&#9733;&#9733;&#9733;&#9734;</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card h-100">
+                            <img class="card-img-top" height="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkafHPuix6LEAPko1EI8NxGJbEE7xMEyrWVFVURpxwzw&s=10">
+                            <div class="card-body">
+                                <h5 class="card-title">Transistor</h5>
+                                <div class="card-text">A versatile semiconductor device used to either amplify electronic signals or act as a fast switch. Transistors are the building blocks of modern computing devices and microprocessors.</div>
+                            </div>
+                            <div class="card-footer bg-secondary py-2"><p class="m-0">&#9733;&#9733;&#9733;&#9733;&#9734;</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card h-100">
+                            <img class="card-img-top" height="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHr8e_ZxHsz_ZglVJZ8Vp3acLtFqEZheJinZRzfQ5PvQ&s=10">
+                            <div class="card-body">
+                                <h5 class="card-title">Transformer</h5>
+                                <div class="card-text"> An electromagnetic device that transfers electrical energy from one circuit to another while changing the voltage levels (stepping up or stepping down the voltage). It generally operates only in AC circuits.</div>
+                            </div>
+                            <div class="card-footer bg-secondary py-2"><p class="m-0">&#9733;&#9733;&#9733;&#9733;&#9734;</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid py-1 px-0 bg-primary d-flex justify-content-center">
+                <p>All rigths Reserved</p>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

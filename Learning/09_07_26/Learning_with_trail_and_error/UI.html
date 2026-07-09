@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning_with_trail_and_error</title>
+    <script src="learning.js"></script>
+</head>
+<body>x
+    <p id="demo">A Paragraph.</p>
+
+    <button type="button" onclick="myFunction()">Try it</button>
+
+    <div id="testing" style="color: blue;">Hi i am being tested</div>
+    <button type="button" onclick="change_color()">Click me</button>
+    <button type="button" onclick="writing1()">Write with me to change the entire document</button>
+    <br>
+    <h1 id="writing" > hi i havn't changed yet</h1>
+    <button type="button" onclick="writing2()">Click me to just change me</button>
+    <br>
+    <br>
+    <button type="button" onclick="bealert(`i am in danger`)">Alert me</button>
+    <br>
+    <br>
+    <button type="button" onclick="window.print()">Print Me</button>
+    <h2 id="loop"> oen </h2>
+    <button type="button" onclick="looping()">loop me</button>
+
+
+    <form onsubmit="handleSubmit(event)">
+        <label>Name </label>
+        <input type="text" id="name" class="name" placeholder="Enter your name">
+        <button type="submit" id="submit">Submit</button> 
+    </form>
+    <div style="display: flex;"><h1>name:</h1><h1 id="display"></h1></div>
+    
+</body>
+</html>
